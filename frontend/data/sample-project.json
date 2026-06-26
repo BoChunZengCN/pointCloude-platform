@@ -1,0 +1,77 @@
+{
+  "project_name": "脚架式点云示例项目",
+  "summary": "已处理 LAS/LAZ 资产进入生产工作流，Phase 1 与 Phase 2 已具备可审计输出，Phase 3 正在补齐生产化计划。",
+  "asset": {
+    "id": "site-a-las",
+    "name": "三维扫描大厅样例",
+    "format": "LAS/LAZ",
+    "source": "processed_las",
+    "point_count": 12840000,
+    "colorized": true,
+    "coordinate_system": "统一工程坐标",
+    "bounds": "X 0-38m, Y 0-22m, Z 0-7m"
+  },
+  "workflow": [
+    {
+      "phase": "Phase 1",
+      "name": "LAS 资产处理",
+      "status": "completed",
+      "command": "pc-system ingest / demo-phase1",
+      "output": "asset.json, quality_report.html, preview_manifest.json"
+    },
+    {
+      "phase": "Phase 1",
+      "name": "切片与规则分割",
+      "status": "completed",
+      "command": "pc-system plan-slice / execute-rule-segment",
+      "output": "slice_plan.json, segmentation_summary.html"
+    },
+    {
+      "phase": "Phase 2",
+      "name": "Potree 与 Splat 入口",
+      "status": "completed",
+      "command": "pc-system publish-phase2-viewer",
+      "output": "phase2_viewer_manifest.json"
+    },
+    {
+      "phase": "Phase 3",
+      "name": "生产工具检查",
+      "status": "completed",
+      "command": "pc-system phase3-tool-check",
+      "output": "phase3_tool_check.md"
+    },
+    {
+      "phase": "Phase 3",
+      "name": "生产运行计划",
+      "status": "planned",
+      "command": "pc-system plan-production-run",
+      "output": "production_run_plan.json"
+    }
+  ],
+  "reports": [
+    {
+      "name": "质量报告",
+      "kind": "QA",
+      "href": "../workspace/reports/site-a-las/quality_report.html",
+      "status": "ready"
+    },
+    {
+      "name": "分割汇总",
+      "kind": "Segmentation",
+      "href": "../workspace/reports/site-a-las/segments/room-a/baseline/segmentation_summary.html",
+      "status": "ready"
+    },
+    {
+      "name": "Phase 2 状态",
+      "kind": "Status",
+      "href": "../workspace/reports/phase2_status.md",
+      "status": "ready"
+    },
+    {
+      "name": "Phase 3 工具检查",
+      "kind": "Production",
+      "href": "../workspace/reports/phase3_tool_check.md",
+      "status": "ready"
+    }
+  ]
+}

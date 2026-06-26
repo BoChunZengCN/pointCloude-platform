@@ -85,6 +85,33 @@ python -m pytest tests -q -p no:cacheprovider
 python -m pip install laspy
 ```
 
+## 前端工作台 / Frontend Workbench
+
+FE-M1 已提供静态点云项目工作台，入口文件位于 `frontend/index.html`。第一版使用 `frontend/data/sample-project.json` 作为样例项目数据，并在浏览器限制本地 JSON 读取时回退到脚本内置样例数据。
+
+FE-M1 provides a static point-cloud project workbench at `frontend/index.html`. The first version uses `frontend/data/sample-project.json` as sample project data and falls back to embedded sample data when a browser blocks local JSON loading.
+
+打开方式 / Open directly:
+
+```powershell
+.\frontend\index.html
+```
+
+当前工作台包含项目概览、资产总览、canvas 点云预览、Phase 1/2/3 流程轨道和报告入口。FE-M2 已优先读取 `workspace/data/assets/asset_index.json`，没有真实索引时回退到样例数据。
+
+The current workbench includes project summary, asset facts, a canvas point-cloud preview, Phase 1/2/3 workflow steps, and report links. FE-M2 now prefers `workspace/data/assets/asset_index.json` and falls back to sample data when no real registry exists.
+
+展示型查看器入口 / Showcase viewer:
+
+```powershell
+.\frontend\viewer.html
+```
+
+最小 API 服务 / Minimal API service:
+
+```powershell
+$env:PC_SYSTEM_PROJECT_ROOT=".\workspace"; python -m uvicorn pc_system.api:app
+```
 ## 常用命令 / Common Commands
 
 初始化工作区 / Initialize workspace:
@@ -269,6 +296,36 @@ $env:PYTHONPATH="src"; python -m pc_system.cli phase3-tool-check `
   --open3d-script .\scripts\open3d_rule_segment.py
 ```
 
+
+生成生产运行计划 / Create a production run plan:
+
+```powershell
+$env:PYTHONPATH="src"; python -m pc_system.cli plan-production-run `
+  --project-root .\workspace `
+  --asset-id sample
+```
+
+生成生产运行报告 / Create a production run report:
+
+```powershell
+$env:PYTHONPATH="src"; python -m pc_system.cli report-production-run `
+  --project-root .\workspace `
+  --asset-id sample
+```
+
+生成资产索引 / Build the asset registry:
+
+```powershell
+$env:PYTHONPATH="src"; python -m pc_system.cli index-assets --project-root .\workspace
+```
+
+检查部署交付包 / Check the deployment package:
+
+```powershell
+$env:PYTHONPATH="src"; python -m pc_system.cli check-deployment-package `
+  --project-root .\workspace `
+  --asset-id sample
+```
 ## 输出结构 / Output Structure
 
 ```text
@@ -295,6 +352,8 @@ workspace/
   reports/phase2_status.md
   reports/phase3_tool_check.json
   reports/phase3_tool_check.md
+  reports/deployment/<asset_id>/deployment_checklist.json
+  reports/deployment/<asset_id>/deployment_checklist.md
   logs/
 ```
 
@@ -315,3 +374,8 @@ workspace/
 - `docs/phase1-development-plan.md`
 - `docs/phase2-development-plan.md`
 - `docs/phase3-development-plan.md`
+
+
+
+
+
