@@ -10,6 +10,7 @@ Move the Phase 1 and Phase 2 adapter-based system toward production readiness by
 2. P3-M2 Production pipeline plan
 3. P3-M3 Production run report
 4. P3-M4 Deployment package checklist
+5. P3-M5 Delivery package export
 
 ## Implemented Boundaries
 
@@ -104,8 +105,31 @@ Current required checks:
 
 Optional checks currently include quality and segmentation HTML reports.
 
+### P3-M5 Delivery Package Export
+
+P3-M5 exports the ready files listed by the asset registry into a handoff directory:
+
+```text
+pc-system export-delivery-package --project-root <workspace> --asset-id <asset_id> [--zip]
+```
+
+The command writes:
+
+```text
+delivery/<asset_id>/delivery_manifest.json
+delivery/<asset_id>/delivery_manifest.md
+delivery/<asset_id>/files/...
+delivery/<asset_id>.zip
+```
+
+Current boundary:
+
+- Existing files are copied while preserving project-relative paths under `files/`.
+- The zip archive is optional and mirrors the exported delivery directory.
+- Missing files are recorded as `missing` instead of failing the export.
+- Registry paths that escape the project root are treated as missing and are not copied.
+
 ## Phase 3 Completion State
 
-P3-M1 through P3-M4 are implemented and covered by tests. Remaining production-hardening work should focus on real job execution state updates, packaged artifact export, and deployment automation.
-
+P3-M1 through P3-M5 are implemented and covered by tests. Remaining production-hardening work should focus on real job execution state updates, optional zip packaging, and deployment automation.
 

@@ -30,6 +30,10 @@ The second route targets raw FLS scan files. The current implementation provides
 | Phase 2 | 统一查看器 / Unified viewer | 已完成 / Done | 汇总 Potree、Splat 和报告入口清单。 |
 | Phase 2 | Phase 2 状态报告 / Phase 2 status | 已完成 / Done | 输出 Phase 2 模块状态。 |
 | Phase 3 | P3-M1 生产工具检查 / Production tool check | 已完成 / Done | 检查外部工具路径并输出检查报告。 |
+| Phase 3 | P3-M2 生产运行计划 / Production run plan | 已完成 / Done | 串联 Phase 1/2/3 命令，生成可审计计划。 |
+| Phase 3 | P3-M3 生产运行报告 / Production run report | 已完成 / Done | 根据计划输出运行状态报告。 |
+| Phase 3 | P3-M4 部署包检查 / Deployment package checklist | 已完成 / Done | 检查交付所需关键产物是否齐备。 |
+| Phase 3 | P3-M5 交付包导出 / Delivery package export | 已完成 / Done | 复制 ready 文件并输出交付 manifest。 |
 
 ## 技术路线 / Technical Routes
 
@@ -332,6 +336,16 @@ $env:PYTHONPATH="src"; python -m pc_system.cli check-deployment-package `
   --project-root .\workspace `
   --asset-id sample
 ```
+
+导出交付包 / Export the delivery package:
+
+```powershell
+$env:PYTHONPATH="src"; python -m pc_system.cli export-delivery-package `
+  --project-root .\workspace `
+  --asset-id sample `
+  --zip
+```
+
 ## 输出结构 / Output Structure
 
 ```text
@@ -360,6 +374,10 @@ workspace/
   reports/phase3_tool_check.md
   reports/deployment/<asset_id>/deployment_checklist.json
   reports/deployment/<asset_id>/deployment_checklist.md
+  delivery/<asset_id>/delivery_manifest.json
+  delivery/<asset_id>/delivery_manifest.md
+  delivery/<asset_id>/files/...
+  delivery/<asset_id>.zip
   logs/
 ```
 
@@ -380,9 +398,4 @@ workspace/
 - `docs/phase1-development-plan.md`
 - `docs/phase2-development-plan.md`
 - `docs/phase3-development-plan.md`
-
-
-
-
-
 

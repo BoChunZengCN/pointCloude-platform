@@ -132,8 +132,9 @@ def build_parser() -> argparse.ArgumentParser:
     deployment = subparsers.add_parser("check-deployment-package", help="Check Phase 3 deployment package readiness.")
     deployment.add_argument("--project-root", required=True, type=Path)
     deployment.add_argument("--asset-id", required=True)
+    export_delivery = subparsers.add_parser("export-delivery-package", help="Export a Phase 3 delivery package for handoff.")
+    export_delivery.add_argument("--project-root", required=True, type=Path)
+    export_delivery.add_argument("--asset-id", required=True)
+    export_delivery.add_argument("--zip", action="store_true", dest="make_zip")
     return parser
-
-
-
 

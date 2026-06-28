@@ -22,7 +22,14 @@ from pc_system.commands.phase2 import (
     run_plan_gaussian_splat,
     run_publish_phase2_viewer,
 )
-from pc_system.commands.phase3 import run_check_deployment_package, run_index_assets, run_phase3_tool_check, run_plan_production_run, run_report_production_run
+from pc_system.commands.phase3 import (
+    run_check_deployment_package,
+    run_export_delivery_package,
+    run_index_assets,
+    run_phase3_tool_check,
+    run_plan_production_run,
+    run_report_production_run,
+)
 from pc_system.fls_ingest import FlsRunner, subprocess_runner as fls_subprocess_runner
 from pc_system.gaussian_splatting import GaussianRunner, subprocess_runner as gaussian_subprocess_runner
 from pc_system.las_reader import read_las_info
@@ -136,6 +143,8 @@ def main(
             return run_index_assets(args.project_root)
         if args.command == "check-deployment-package":
             return run_check_deployment_package(args.project_root, args.asset_id)
+        if args.command == "export-delivery-package":
+            return run_export_delivery_package(args.project_root, args.asset_id, args.make_zip)
         raise ValueError(f"Unsupported command: {args.command}")
     except RuntimeError as exc:
         print(str(exc), file=sys.stderr)
@@ -147,7 +156,4 @@ def main(
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-
-
 

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from pc_system.asset_registry import build_asset_registry, discover_asset_metadata, write_asset_registry
 from pc_system.config import ProjectConfig
+from pc_system.delivery_package import export_delivery_package
 from pc_system.deployment_checklist import build_deployment_checklist, write_deployment_checklist
 from pc_system.phase3_tool_check import ToolSpec, build_tool_check_report, write_tool_check_report
 from pc_system.production_pipeline import build_production_run_plan, write_production_run_plan
@@ -93,5 +94,19 @@ def run_check_deployment_package(project_root: Path, asset_id: str) -> int:
     checklist = build_deployment_checklist(project_root, asset_id)
     output_dir = paths["reports"] / "deployment" / asset_id
     write_deployment_checklist(checklist, output_dir)
+    return 0
+
+
+
+def run_export_delivery_package(project_root: Path, asset_id: str, make_zip: bool = False) -> int:
+    """导出资产交付包，并写出交付 manifest。"""
+
+    paths = ProjectConfig(project_root=project_root).ensure_directories()
+    registry_path = paths["assets"] / "asset_index.json"
+    if not registry_path.exists():
+        print(f"Asset registry not found: {registry_path}", file=sys.stderr)
+        return 2
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    export_delivery_package(project_root, registry, asset_id, project_root / "delivery" / asset_id, make_zip=make_zip)
     return 0
 
